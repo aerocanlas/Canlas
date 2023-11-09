@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Category') }}
         </h2>
     </x-slot>
 
@@ -15,50 +15,42 @@
                 <table class="table">
                         <thead>
                             <tr>
-                            <th scope="col">Id</th>
+                            <th scope="col">ID</th>
                             <th scope="col">Category Name</th>
-                            <th scope="col">User Id</th>
+                            <th scope="col">User ID</th>
                             <th scope="col">Created At</th>
-                            </tr>
-                    </thead>
-                    
-                    <tbody>
-
-                    @php
-                    $i = 1;
-                        @endphp
-
-                        @foreach ($categories as $category)
-                        <tr>
-                        <th scope="row">{{$i++}}</th>
-
-                        <td>{{$category->category_name}}
-
-                        </td>
-                        <td>{{$category->user_id}}</td>
-                        <td>{{$category->created_at}}</td>
+                            {{-- <th scope="col" colspan="2">Actions</th> --}}
                         </tr>
-
+                    </thead>
+                    <tbody>
+                        @foreach ($categories as $category)
+                            <tr>
+                                <th scope="row">{{ $category->id }}</th>
+                                <td>{{ $category->category_name }}</td>
+                                <td>{{ $category->user_id }}</td>
+                                <td>{{ $category->created_at }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
-                    </table>
+                </table>
+            </div>
+        </div>
 
-                            
+            <div class="col-md-4">
+                <div class="card p-3">
+            <form action="{{url('/add_category')}}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <h3>Add a Category</h3>
+                  <label for="cat_name">Category Name</label>
+                  <input type="text" class="form-control" name="category_name" placeholder="Input your category name">
                 </div>
-            </div>
-
-                                <div class="col-md-4">
-                                        <form action="/category" method="POST">
-                                        <div class="mb-3">
-                                        <label for="category_name">Category Name</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Input category here">
-                                        </div>
-                                        <div class="mb-3">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                        </div>
-            </div>
-                                        
-                                    </form>
+                <div class="mb-3">
+                  <label for="user_id">User ID</label>
+                  <input type="number" class="form-control" name="user_id" placeholder="Input your user ID" min="1">
+                </div>
+                <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+              </form>
                                 </div>
 </div>
 </div>
