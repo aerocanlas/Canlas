@@ -2,6 +2,10 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard') }}
+            <br>
+            Hi... {{Auth::user()->name}}
+            <!-- <b style = 'float-right' > Total users 
+          </b> -->
         </h2>
     </x-slot>
 
@@ -28,7 +32,7 @@
 
       </td>
       <td>{{$user->email}}</td>
-      <td>{{$user->created_at}}</td>
+      <td>{{$user->created_at->diffForHumans()}}</td>
     </tr>
 
     @endforeach

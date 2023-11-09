@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Category') }}
+            {{ __('All Category') }}
         </h2>
     </x-slot>
 
@@ -19,36 +19,51 @@
                             <th scope="col">Category Name</th>
                             <th scope="col">User ID</th>
                             <th scope="col">Created At</th>
+                            <th scope="col">Action</th>
                             {{-- <th scope="col" colspan="2">Actions</th> --}}
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($categories as $category)
                             <tr>
-                                <th scope="row">{{ $category->id }}</th>
+                                <th scope="row">{{$categories->firstItem()+$loop->index}}</th>
                                 <td>{{ $category->category_name }}</td>
-                                <td>{{ $category->user_id }}</td>
-                                <td>{{ $category->created_at }}</td>
+                                <td>{{ $category->user->name }}</td>
+                                <td>{{ $category->created_at->diffForHumans() }}</td>
+
+                                <td>
+                                    <a href="{{url('category/edit/'.$category->id)}}" class="btn btn-info">Edit</a>
+                                    <a href="{{url('category/delete/'.$category->id)}}" class="btn btn-danger">Delete</a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+                {{$categories->links()}}
             </div>
         </div>
 
             <div class="col-md-4">
-                <div class="card p-3">
-            <form action="{{url('/add_category')}}" method="POST">
+                <div class="card">
+                    <div class="card-header">
+                    Add Categories
+                </div>
+
+                <div class="card-body">
+
+            <form action="{{route('add.category')}}" method="POST">
                 @csrf
-                <div class="mb-3">
-                    <h3>Add a Category</h3>
-                  <label for="cat_name">Category Name</label>
+                <div class="form-group">
+        
+                  <label for="CategoryName" class="form-label">Category Name</label>
+
                   <input type="text" class="form-control" name="category_name" placeholder="Input your category name">
+
+                  @error('category_name')
+                  <span class="text-danger">{{$message}}</span>
+                  @enderror
                 </div>
-                <div class="mb-3">
-                  <label for="user_id">User ID</label>
-                  <input type="number" class="form-control" name="user_id" placeholder="Input your user ID" min="1">
-                </div>
+    
                 <button type="submit" class="btn btn-primary" name="submit">Submit</button>
               </form>
                                 </div>
