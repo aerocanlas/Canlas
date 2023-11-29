@@ -11,13 +11,14 @@ class CategoryController extends Controller
 {
     public function index() {
         $categories = Categories::latest()->paginate('5');
-        return view('admin.category.category', compact('categories'));
+        $trashCat = Categories::onlyTrashed()->latest()->paginate('5');
+        return view('admin.category.category', compact('categories', 'trashCat'));
     }
 
     public function create(Request $request) {
 
         $validated = $request->validate([
-            'category_name' => 'required|unique:categories|max:255',
+            'category_name' => 'required|max:255',
         ]);
 
         Categories::create([
@@ -30,6 +31,8 @@ class CategoryController extends Controller
 
         return redirect()->back()->with('success','Category Inserted Successfully');
     }
+
+    
 public function Edit($id){
 
     $categories = Categories::find($id);
@@ -47,12 +50,24 @@ public function Update(Request $request, $id) {
     return Redirect()->route('category')->with('success', 'Updated Successfully');
 }
 
-public function Delete($id){
 
-    $category = Categories::find($id);
-        $category->delete();
+public function RemoveCat($id){
 
-        return Redirect()->back();
-
+    $remove = Categories::find($id)->delete();
+    return redirect()->back()->with('success','Category Removed Successfully');
 }
+
+public function RestoreCat($id){
+
+    $restore = Categories::withTrashed()->find($id)->restore();
+    return redirect()->back()->with('success','Category Restored Successfully');
+}
+
+public function DeleteCat($id){
+
+    $delete = Categories::onlyTrashed()->find($id)->forceDelete();
+    return redirect()->back()->with('success','Category Deleted Successfully');
+}
+
+
 }

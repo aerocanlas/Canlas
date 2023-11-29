@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('category_name');
             $table->integer('user_id');
             $table->timestamps();
-            $table->SoftDeletes();   //Archive 
+            $table->SoftDeletes();
         });
     }
 
