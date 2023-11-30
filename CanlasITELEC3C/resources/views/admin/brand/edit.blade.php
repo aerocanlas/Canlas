@@ -25,12 +25,17 @@
                                         @enderror
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="py-3 form-group">
                                         <label for="brandImage" class="form-label">Current Brand Image</label>
                                         <br>
                                         <img src="{{ asset($brands->brand_image) }}" alt="Brand Image" style="max-width: 200px;">
                                         <br>
-                                        <label for="brandImage" class="form-label">Update Brand Image</label>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="updateImage" name="update_image" value="1">
+                                            <label class="form-check-label" for="updateImage">Update the Brand Image</label>
+                                        </div>
+                                        <br>
+                                        <label for="brandImage" class="form-label">Upload New Brand Image</label>
                                         <input type="file" class="form-control" name="brand_image" accept="image/*">
                                         @error('brand_image')
                                         <span class="text-danger">{{$message}}</span>

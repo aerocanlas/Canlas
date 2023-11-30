@@ -68,27 +68,26 @@ class BrandController extends Controller
     //     return Redirect()->route('brand')->with('success', 'Updated Successfully');
     // }
 
-    public function Update(Request $request, $id) {
+    public function Update(Request $request, $id)
+    {
         $request->validate([
             'brand_name' => 'required|max:255',
-            'brand_image' => 'required|mimes:jpg,jpeg,png',
+            'brand_image' => 'mimes:jpg,jpeg,png',
         ], [
             'brand_name.required' => 'Please input brand name',
             'brand_name.max' => 'Brand name must be less than 255 characters',
-            'brand_image.required' => 'Please upload a brand image',
             'brand_image.mimes' => 'Required file extension: jpg, jpeg, or png'
         ]);
     
         $brand = Brand::find($id);
     
-        // Check if a new image is provided
-        if ($request->hasFile('brand_image')) {
-            // Delete the old image
+        $updateImage = $request->has('update_image');
+    
+        if ($request->hasFile('brand_image') && $updateImage) {
             if (file_exists($brand->brand_image)) {
                 unlink($brand->brand_image);
             }
     
-            // Upload and save the new image
             $brand_image = $request->file('brand_image');
             $name_gen = hexdec(uniqid());
             $img_ext = strtolower($brand_image->getClientOriginalExtension());
@@ -97,14 +96,14 @@ class BrandController extends Controller
             $last_img = $up_loc . $image_name;
             $brand_image->move($up_loc, $image_name);
     
-            // Update the brand with the new image path
             $brand->update([
                 'brand_name' => $request->brand_name,
                 'brand_image' => $last_img,
                 'user_id' => Auth::user()->id,
             ]);
+        } elseif ($updateImage) {
+            return redirect()->back()->withErrors(['brand_image' => 'Please upload a brand image to update successfully']);
         } else {
-            // Update the brand without changing the image
             $brand->update([
                 'brand_name' => $request->brand_name,
                 'user_id' => Auth::user()->id,
@@ -113,6 +112,7 @@ class BrandController extends Controller
     
         return redirect()->route('brand')->with('success', 'Updated Successfully');
     }
+
     
     
     public function RemoveBrand($id){

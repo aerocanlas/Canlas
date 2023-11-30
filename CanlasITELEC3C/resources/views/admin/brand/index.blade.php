@@ -98,50 +98,53 @@
 </div>
 </div>
         </div>
-    </div>
-
-    <div class = "col-md-8">
-        <div class="card">
-            <div class="card-header">
-                Deleted List
-            </div>
-        <table class="table">
-                <thead>
-                    <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Brand Name</th>
-                    <th scope="col">Brand Image</th>
-                    <th scope="col">Deleted At</th>
-                    <th scope="col">Action</th>
-                    {{-- <th scope="col" colspan="2">Actions</th> --}}
-                </tr>
-            </thead>
-            <tbody>
-
-                @php ($i=1)
-
-                @foreach ($trashBrand as $trash)
-                    <tr>
-                        <th scope="row">{{$i++}}</th> 
-
-                        <td>{{ $trash->brand_name }}</td>
-                        <td><img src={{ asset($trash->brand_image)}} alt="" style="width: 60px; height: 40px"></td>
-                        <td>{{ $trash->deleted_at->diffForHumans() }}</td>
-
-                        <td>
-                            <a href="{{url('brand/restore/'.$trash->id)}}" class="btn btn-info">Restore</a>
-                            <a href="{{url('brand/delete/'.$trash->id)}}" class="btn btn-danger">Delete</a>
-                        </td>
+        <div class = "col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Deleted List
+                </div>
+            <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Brand Name</th>
+                        <th scope="col">Brand Image</th>
+                        <th scope="col">Deleted At</th>
+                        <th scope="col">Action</th>
+                        {{-- <th scope="col" colspan="2">Actions</th> --}}
                     </tr>
-                @endforeach
-
-            </tbody>
-        </table>
-
-        {{$trashBrand->links()}}
+                </thead>
+                <tbody>
+    
+                    @php ($i=1)
+    
+                    @foreach ($trashBrand as $trash)
+                        <tr>
+                            <th scope="row">{{$i++}}</th> 
+    
+                            <td>{{ $trash->brand_name }}</td>
+                            <td><img src={{ asset($trash->brand_image)}} alt="" style="width: 60px; height: 40px"></td>
+                            <td>{{ $trash->deleted_at->diffForHumans() }}</td>
+    
+                            <td>
+                                <a href="{{url('brand/restore/'.$trash->id)}}" class="btn btn-info">Restore</a>
+                                <a href="{{url('brand/delete/'.$trash->id)}}" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    @endforeach
+    
+                </tbody>
+            </table>
+    
+            {{$trashBrand->links()}}
+        </div>
     </div>
-</div>
+    </div>
+
+    
 
 </div>
+
+
 
 </x-app-layout>
